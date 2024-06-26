@@ -464,21 +464,6 @@
     [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:isSDKConfigured] callbackId:command.callbackId];
 }
 
--(void)setCrashLoggingEnabled:(CDVInvokedUrlCommand*)command {
-    id value = [command.arguments objectAtIndex:0];
-    if (value == (id)[NSNull null]) {
-        value = nil;
-    }
-    BOOL enableCrashLogging = [value boolValue];
-    [[PushIOManager sharedInstance] setCrashLoggingEnabled:enableCrashLogging];
-    [self sendPluginResultToCallback:command.callbackId withResponse:nil andError:nil];
-}
-
--(void)isCrashLoggingEnabled:(CDVInvokedUrlCommand*)command {
-    BOOL isCrashLoggingEnabled = [[PushIOManager sharedInstance] isCrashLoggingEnabled];
-    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:isCrashLoggingEnabled] callbackId:command.callbackId];
-}
-
 -(void)setLoggingEnabled:(CDVInvokedUrlCommand*)command {
     id value = [command.arguments objectAtIndex:0];
     if (value == (id)[NSNull null]) {
