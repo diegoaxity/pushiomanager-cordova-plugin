@@ -1,28 +1,31 @@
 ## Cordova Plugin for Responsys SDK (Capacitor Compatible)
 
-This plugin makes it easy to integrate your Cordova based mobile app with the Responsys SDK. 
+This plugin makes it easy to integrate your Cordova based mobile app with the Responsys SDK.
 
 ### Table of Contents
-- [Requirements](#requirements)
-- [Setup](#setup)
-  * [For Android](#for-android)
-  * [For iOS](#for-ios)
-- [Installation](#installation)
-  * [Capacitor Push Plugin](#capacitor-push-plugin)
-  * [Responsys Plugin](#responsys-plugin)
-- [Integration](#integration)
-  * [For Android](#for-android-1)
-  * [For iOS](#for-ios-1)
-- [Usage](#usage)
-  * [Configure And Register](#configure-and-register)
-  * [User Identification](#user-identification)
-  * [Engagements And Conversion](#engagements-and-conversion)
-  * [In-App Messages](#in-app-messages)
-  * [Message Center](#message-center)
-  * [Geofences And Beacons](#geofences-and-beacons)
-  * [Notification Preferences](#notification-preferences)
-- [Support](#support)
-- [License](#license)
+
+- [Cordova Plugin for Responsys SDK (Capacitor Compatible)](#cordova-plugin-for-responsys-sdk-capacitor-compatible)
+  - [Table of Contents](#table-of-contents)
+  - [Requirements](#requirements)
+  - [Setup](#setup)
+    - [For Android](#for-android)
+    - [For iOS](#for-ios)
+  - [Installation](#installation)
+    - [Capacitor Push Plugin](#capacitor-push-plugin)
+    - [Responsys Plugin](#responsys-plugin)
+  - [Integration](#integration)
+    - [For Android](#for-android-1)
+    - [For iOS](#for-ios-1)
+  - [Usage](#usage)
+    - [Configure And Register](#configure-and-register)
+    - [User Identification](#user-identification)
+    - [Engagements And Conversion](#engagements-and-conversion)
+    - [In-App Messages](#in-app-messages)
+    - [Message Center](#message-center)
+    - [Geofences And Beacons](#geofences-and-beacons)
+    - [Notification Preferences](#notification-preferences)
+  - [Support](#support)
+  - [License](#license)
 
 <br/>
 
@@ -36,56 +39,31 @@ This plugin makes it easy to integrate your Cordova based mobile app with the Re
 
 <br/>
 
-
 ### Setup
 
 Before installing the plugin, you must setup your app to receive push notifications.
 
+#### For Android
 
-#### For Android 
-- [Get FCM Credentials](https://docs.oracle.com/en/cloud/saas/marketing/responsys-develop-mobile/android/gcm-credentials) 
+- [Get FCM Credentials](https://docs.oracle.com/en/cloud/saas/marketing/responsys-develop-mobile/android/gcm-credentials)
 - Log in to the [Responsys Mobile App Developer Console](https://docs.oracle.com/en/cloud/saas/marketing/responsys-develop-mobile/dev-console/login/) and enter your FCM credentials (Project ID and Server API Key) for your Android app.
 - Download the `pushio_config.json` file generated from your credentials and include it in your project's `android/src/main/assets` folder.
-- Create a new directory  - `PushIOManager` inside your app's `android` directory.
-- Download the SDK native binary from [here](https://www.oracle.com/downloads/applications/cx/responsys-mobile-sdk.html) and place the .aar file in this `android/PushIOManager/` directory.
-- Inside the `android/PushIOManager` directory, create a file `build.gradle` with the following code:
-
-	```gradle
-	configurations.maybeCreate("default")
-	artifacts.add("default", file('PushIOManager-6.52.aar'))
-	```		
-
-- Add the following to your project-wide `settings.gradle` file:
-
-	```gradle
-	include ':PushIOManager'
-	project(':PushIOManager').projectDir = new File(rootProject.projectDir, './PushIOManager')
-	```
-- Open `app/build.gradle` and update the `dependencies` list,
-
-	```gradle
-	dependencies {
-	    implementation project(':PushIOManager')
-	}
-	```
 
 <br/>
-
 
 #### For iOS
-- [Generate Auth Key](https://docs.oracle.com/en/cloud/saas/marketing/responsys-develop-mobile/ios/auth-key/) 
+
+- [Generate Auth Key](https://docs.oracle.com/en/cloud/saas/marketing/responsys-develop-mobile/ios/auth-key/)
 - Log in to the [Responsys Mobile App Developer Console](https://docs.oracle.com/en/cloud/saas/marketing/responsys-develop-mobile/dev-console/login/) and enter your Auth Key and other details for your iOS app.
 - Download the `pushio_config.json` file generated from your credentials.
-- Open the Xcode project workspace in your `platforms/ios` directory of cordova app. 
+- Open the Xcode project workspace in your `platforms/ios` directory of cordova app.
 - Drag and Drop your `pushio_config.json` in Xcode project.
-- Select the root project and Under Capabilites add the "Push Notifications" and "Background Modes". 
-![Capabilty Image](./img/ios_add_capability.png "Capabilty Image")
+- Select the root project and Under Capabilites add the "Push Notifications" and "Background Modes".
+  ![Capabilty Image](./img/ios_add_capability.png "Capabilty Image")
 
 <br/>
 
-
 ### Installation
-
 
 #### Capacitor Push Plugin
 
@@ -93,41 +71,28 @@ Before installing the plugin, you must setup your app to receive push notificati
 
 - Include following code in `capacitor.config.ts`,
 
-	```shell
-	import { CapacitorConfig } from '@capacitor/cli';
-	
-	const config: CapacitorConfig = {
-	  cordova: {
-	    preferences: {
-	      'supportCapPushPlugin':'true'
-	    }
-	  }
-	};
-	
-	export default
-	```
+  ```shell
+  import { CapacitorConfig } from '@capacitor/cli';
+
+  const config: CapacitorConfig = {
+    cordova: {
+      preferences: {
+        'supportCapPushPlugin':'true'
+      }
+    }
+  };
+
+  export default
+  ```
 
 <br/>
 
-
 #### Responsys Plugin
-
-- Clone the plugin outside your app directory,
-
-	```shell
-	git clone -b capacitor https://github.com/oracle/pushiomanager-cordova-plugin.git
-	```
-	
-- Create `frameworks` folder inside the plugin and place the [latest iOS PushIOManager.framework](https://www.oracle.com/downloads/applications/cx/responsys-mobile-sdk.html) inside `PATH_TO_cordova-plugin-pushiomanager_DIRECTORY/frameworks/` folder. 
-
-After above these steps your framework directory should look like this.
-
-![FrameworkCopy](./img/framework_copy.png "Framework Copy")
 
 The plugin can be installed with the following command
 
 ```shell
-npm install PATH_TO_pushiomanager-cordova-plugin_DIRECTORY 
+npm install https://github.com/diegoaxity/pushiomanager-cordova-plugin
 ```
 
 then perform sync using with the following command
@@ -139,238 +104,235 @@ npx cap sync
 or Ionic command:
 
 ```shell
-ionic cap sync 
+ionic cap sync
 ionic cap sync <platform>
 ```
 
 <br/>
 
-
-
 ### Integration
-
 
 #### For Android
 
 - Open the `AndroidManifest.xml` file located at `android/src/main` and add the following,
-	* Permissions above the `<application>` tag,
 
-		```xml
-		<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-		<uses-permission android:name="${applicationId}.permission.PUSHIO_MESSAGE" />
-		<uses-permission android:name="${applicationId}.permission.RSYS_SHOW_IAM" />
-		<permission android:name=".permission.PUSHIO_MESSAGE" android:protectionLevel="signature" />
-		<permission android:name="${applicationId}.permission.RSYS_SHOW_IAM" android:protectionLevel="signature" />
-		```
-	
-	* Intent-filter for launching app when the user taps on a push notification. Add it inside the `<activity>` tag of `MainActivity`,
+  - Permissions above the `<application>` tag,
 
-		```xml
-		<intent-filter>
-			<action android:name="${applicationId}.NOTIFICATIONPRESSED" />
-	   		<category android:name="android.intent.category.DEFAULT" />
-		</intent-filter>
-		```
+    ```xml
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="${applicationId}.permission.PUSHIO_MESSAGE" />
+    <uses-permission android:name="${applicationId}.permission.RSYS_SHOW_IAM" />
+    <permission android:name=".permission.PUSHIO_MESSAGE" android:protectionLevel="signature" />
+    <permission android:name="${applicationId}.permission.RSYS_SHOW_IAM" android:protectionLevel="signature" />
+    ```
 
-	* (Optional) Intent-filter for [Android App Links](https://developer.android.com/training/app-links) setup. Add it inside the `<activity>` tag of `MainActivity`,
+  - Intent-filter for launching app when the user taps on a push notification. Add it inside the `<activity>` tag of `MainActivity`,
 
-		```xml
-		<intent-filter android:autoVerify="true">
-			<action android:name="android.intent.action.VIEW" />
-			<category android:name="android.intent.category.DEFAULT" />
-			<category android:name="android.intent.category.BROWSABLE" />
-			<data android:scheme="https" 
-			      android:pathPrefix="/pub/acc"
-			      android:host="@string/app_links_url_host" />
+    ```xml
+    <intent-filter>
+    	<action android:name="${applicationId}.NOTIFICATIONPRESSED" />
+     		<category android:name="android.intent.category.DEFAULT" />
+    </intent-filter>
+    ```
+
+  - (Optional) Intent-filter for [Android App Links](https://developer.android.com/training/app-links) setup. Add it inside the `<activity>` tag of `MainActivity`,
+
+    ```xml
+    <intent-filter android:autoVerify="true">
+    	<action android:name="android.intent.action.VIEW" />
+    	<category android:name="android.intent.category.DEFAULT" />
+    	<category android:name="android.intent.category.BROWSABLE" />
+    	<data android:scheme="https"
+    	      android:pathPrefix="/pub/acc"
+    	      android:host="@string/app_links_url_host" />
        </intent-filter>
-		```
-		
-	* Add the following code inside `<application>` tag,
+    ```
 
-		```xml
-		 <receiver android:enabled="true" 
-		 			 android:exported="false" 
-		 			 android:name="com.pushio.manager.PushIOUriReceiver" 
-		 			 tools:node="replace">
-		 			 
+  - Add the following code inside `<application>` tag,
+
+    ```xml
+     <receiver android:enabled="true"
+     			 android:exported="false"
+     			 android:name="com.pushio.manager.PushIOUriReceiver"
+     			 tools:node="replace">
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="@string/uri_identifier" />
             </intent-filter>
-            
+
         </receiver>
-        
-        <activity android:name="com.pushio.manager.iam.ui.PushIOMessageViewActivity" 
-        			  android:permission="${applicationId}.permission.SHOW_IAM" 
+
+        <activity android:name="com.pushio.manager.iam.ui.PushIOMessageViewActivity"
+        			  android:permission="${applicationId}.permission.SHOW_IAM"
         			  android:theme="@android:style/Theme.Translucent.NoTitleBar">
-            
+
             <intent-filter tools:ignore="AppLinkUrlError">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="@string/uri_identifier" />
             </intent-filter>
-            
+
         </activity>
-        
-       <service android:name=".MyFirebaseMessagingService">
-		    <intent-filter>
-		        <action android:name="com.google.firebase.MESSAGING_EVENT" />
-		    </intent-filter>
-		</service>
-		```
-		
+
+       <service android:name=".PIOManagerMessagingService">
+        <intent-filter>
+            <action android:name="com.google.firebase.MESSAGING_EVENT" />
+        </intent-filter>
+    </service>
+    ```
 
 - Open the `strings.xml` file located at `android/src/main/res/values` and add the following properties,
 
-	* Custom URI scheme for displaying In-App Messages and Rich Push content,
+  - Custom URI scheme for displaying In-App Messages and Rich Push content,
 
-		```xml
-		<string name="uri_identifier">pio-YOUR_API_KEY</string>
-		```
-		You can find the API key in the `pushio_config.json` that was placed in `android/app/src/main/assets` earlier during setup.
-		
-	* (Optional) If you added the `<intent-filter>` for Android App Links in the steps above, then you will need to declare the domain name,
-	
-		```xml
-		<string name="app_links_url_host">YOUR_ANDROID_APP_LINKS_DOMAIN</string>
-		```
+    ```xml
+    <string name="uri_identifier">pio-YOUR_API_KEY</string>
+    ```
 
-- Create a native Intent Service - `MyFirebaseMessagingService.java` in `android/app/src/main/java/<your_package_name>`, as follows,
+    You can find the API key in the `pushio_config.json` that was placed in `android/app/src/main/assets` earlier during setup.
 
-	```java
-	public class MyFirebaseMessagingService extends FirebaseMessagingService {
-	    @Override
-	    public void onNewToken(String token) {
-	    	super.onNewToken(token);
-	        
-	      	PushNotificationsPlugin.onNewToken(token);
-	        
-	      	PushIOManager.getInstance(getApplicationContext()).setDeviceToken(token);
-	    }
-	
-	    @Override
-	    public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
-	        super.onMessageReceived(remoteMessage);
-	        
-	        PushIOManager pushIOManager = PushIOManager.getInstance(getApplicationContext());
-	        
-	        if (pushIOManager.isResponsysPush(remoteMessage)) {
-	            
-	            pushIOManager.handleMessage(remoteMessage);
-	        
-	        }else{
-	        
-	            PushNotificationsPlugin.sendRemoteMessage(remoteMessage);
-	           
-	        }
-	    }
-	}
-	```
-	
+  - (Optional) If you added the `<intent-filter>` for Android App Links in the steps above, then you will need to declare the domain name,
+
+    ```xml
+    <string name="app_links_url_host">YOUR_ANDROID_APP_LINKS_DOMAIN</string>
+    ```
+
+- Create a native Intent Service - `PIOManagerMessagingService.java` in `android/app/src/main/java/<your_package_name>`, as follows,
+
+  ```java
+  public class PIOManagerMessagingService extends FirebaseMessagingService {
+      @Override
+      public void onNewToken(String token) {
+      	super.onNewToken(token);
+
+        	PushNotificationsPlugin.onNewToken(token);
+
+        	PushIOManager.getInstance(getApplicationContext()).setDeviceToken(token);
+      }
+
+      @Override
+      public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
+          super.onMessageReceived(remoteMessage);
+
+          PushIOManager pushIOManager = PushIOManager.getInstance(getApplicationContext());
+
+          if (pushIOManager.isResponsysPush(remoteMessage)) {
+
+              pushIOManager.handleMessage(remoteMessage);
+
+          }else{
+
+              PushNotificationsPlugin.sendRemoteMessage(remoteMessage);
+
+          }
+      }
+  }
+  ```
+
 - Intercept incoming push notifications in your app (.ts) and redirect to any other push plugin (if any),
 
-	```javascript
-	constructor() {
-		PushNotifications.register();
-	  	PushNotifications.addListener('pushNotificationReceived',
-	      (notification: PushNotificationSchema) => {
-	      
-	        alert("Push received: " + JSON.stringify(notification));
-	        
-	      }
-	    );
+  ```javascript
+  constructor() {
+  	PushNotifications.register();
+    	PushNotifications.addListener('pushNotificationReceived',
+        (notification: PushNotificationSchema) => {
+
+          alert("Push received: " + JSON.stringify(notification));
+
+        }
+      );
     }
-	```
+  ```
 
 <br/>
-
 
 #### For iOS
 
 - Add `-ObjC` linker flag to Cordova Plugin target in pods project.
 
-	![linkerflag Image](./img/otherlinerflag.png "linkerflag Image")
+  ![linkerflag Image](./img/otherlinerflag.png "linkerflag Image")
 
 - Add the following two methods in AppDelegate to handle the APNS device token registration event
 
-	```shell
-	func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-	  	  NotificationCenter.default.post(name: .capacitorDidRegisterForRemoteNotifications, object: deviceToken)
-	}
-	
-	func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-	      NotificationCenter.default.post(name: .capacitorDidFailToRegisterForRemoteNotifications, object: error)
-	}
-	```
-	
+  ```shell
+  func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+    	  NotificationCenter.default.post(name: .capacitorDidRegisterForRemoteNotifications, object: deviceToken)
+  }
+
+  func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        NotificationCenter.default.post(name: .capacitorDidFailToRegisterForRemoteNotifications, object: error)
+  }
+  ```
+
 - In your app, Add the following in the AppDelegate file in App xcode project
 
-	```shell
-	import Capacitor
-	
-	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool   
-	       addPushNotificationListner()
-	        return true
-	    }
-	
-	public func addPushNotificationListner() {
-	       
-	       let callback =  { (response:[String:Any]?, error:NSError?) -> Void in
-	           
-	           if let response = response {
-	               NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PushIODidReceiveNotification"),object: response)
-	           }
-	           
-	       }
-	        
-	       addListener(name: "pushNotificationReceived",closure: callback)
-	       
-	       addListener(name: "pushNotificationActionPerformed",closure: callback)
-	 }
-	    
-	public func addListener(name:String,closure:@escaping([String:Any]?, NSError?)->Void) {
-	        
-	        DispatchQueue.main.async {
-	            if let rootViewController:CAPBridgeViewController =   self.window?.rootViewController as? CAPBridgeViewController {
-	                
-	                if let plugin:CAPPlugin = rootViewController.bridge?.plugin(withName: "PushNotifications") {
-	                    
-	                    if let call  =  CAPPluginCall(callbackId: name, success: { result, c in
-	                        closure(result?.data,nil);
-	                    }, error: { error in
-	                        closure(nil,error as? NSError);
-	                    }) {
-	                        let pcall =  call;
-	                        pcall.options = JSTypes.coerceDictionaryToJSObject(call.options)
-	                    plugin.addEventListener(name, listener: call)
-	                  }
-	                }
-	            }
-	        }
-	 }
-	```
+  ```shell
+  import Capacitor
+
+  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
+         addPushNotificationListner()
+          return true
+      }
+
+  public func addPushNotificationListner() {
+
+         let callback =  { (response:[String:Any]?, error:NSError?) -> Void in
+
+             if let response = response {
+                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PushIODidReceiveNotification"),object: response)
+             }
+
+         }
+
+         addListener(name: "pushNotificationReceived",closure: callback)
+
+         addListener(name: "pushNotificationActionPerformed",closure: callback)
+   }
+
+  public func addListener(name:String,closure:@escaping([String:Any]?, NSError?)->Void) {
+
+          DispatchQueue.main.async {
+              if let rootViewController:CAPBridgeViewController =   self.window?.rootViewController as? CAPBridgeViewController {
+
+                  if let plugin:CAPPlugin = rootViewController.bridge?.plugin(withName: "PushNotifications") {
+
+                      if let call  =  CAPPluginCall(callbackId: name, success: { result, c in
+                          closure(result?.data,nil);
+                      }, error: { error in
+                          closure(nil,error as? NSError);
+                      }) {
+                          let pcall =  call;
+                          pcall.options = JSTypes.coerceDictionaryToJSObject(call.options)
+                      plugin.addEventListener(name, listener: call)
+                    }
+                  }
+              }
+          }
+   }
+  ```
 
 - Run capacitor sync command. Now App is ready to build and run.
 
-	```shell
-	ionic cap sync
-	```
-
+  ```shell
+  ionic cap sync
+  ```
 
 - For In-App Messages and Rich Push Content follow the below steps :
-  * To Enable Custom URI scheme for displaying In-App Messages and Rich Push content follow the [Step 1](https://docs.oracle.com/en/cloud/saas/marketing/responsys-develop-mobile/ios/in-app-msg/). You don't need to add the code.
-  You can find the API key in the `pushio_config.json` that was placed in your Xcode project earlier during setup.
-  
-  * Follow  [Step 2](https://docs.oracle.com/en/cloud/saas/marketing/responsys-develop-mobile/ios/in-app-msg/) to  add the required capabilites in your Xcode project for In-App messages. You don't need to add the code.
 
-- For Media Attachments you can follow the following [guide](https://docs.oracle.com/en/cloud/saas/marketing/responsys-develop-mobile/ios/media-attachments/). Copy and paste the code provided in guide in respective files.	
+  - To Enable Custom URI scheme for displaying In-App Messages and Rich Push content follow the [Step 1](https://docs.oracle.com/en/cloud/saas/marketing/responsys-develop-mobile/ios/in-app-msg/). You don't need to add the code.
+    You can find the API key in the `pushio_config.json` that was placed in your Xcode project earlier during setup.
 
-- For Carousel Push you can follow the following [guide](https://docs.oracle.com/en/cloud/saas/marketing/responsys-develop-mobile/ios/carousel-push/). Copy and paste the code provided in guide in respective files.    
+  - Follow [Step 2](https://docs.oracle.com/en/cloud/saas/marketing/responsys-develop-mobile/ios/in-app-msg/) to add the required capabilites in your Xcode project for In-App messages. You don't need to add the code.
+
+- For Media Attachments you can follow the following [guide](https://docs.oracle.com/en/cloud/saas/marketing/responsys-develop-mobile/ios/media-attachments/). Copy and paste the code provided in guide in respective files.
+
+- For Carousel Push you can follow the following [guide](https://docs.oracle.com/en/cloud/saas/marketing/responsys-develop-mobile/ios/carousel-push/). Copy and paste the code provided in guide in respective files.
 
 <br/>
-
 
 ### Usage
 
@@ -387,79 +349,73 @@ export class MyPage {
   constructor(
     public platform: Platform
   ) {
-  
-    this.platform.ready().then(() => {
-    
-      PushIOManager = cordova.plugins.PushIOManager;
 
+    this.platform.ready().then(() => {
+      PushIOManager = cordova.plugins.PushIOManager;
       PushIOManager.setLogLevel(PushIOManager.logLevel.VERBOSE);
     }
 }
 ```
 
-
 #### Configure And Register
 
 - Configure the SDK,
 
-	```javascript
-	PushIOManager.configure("pushio_config.json", (success) => {
-	      
-	}, (error) => {
-	      
-	});
-	```
-	
+  ```javascript
+  PushIOManager.configure(
+    "pushio_config.json",
+    (success) => {},
+    (error) => {}
+  );
+  ```
+
 - Once the SDK is configured, register the app with Responsys,
 
-	```javascript
-	PushIOManager.registerApp(true, (success) => {
-	
-	}, (error) => {     
-	
-	});
-	```
-	
+  ```javascript
+  PushIOManager.registerApp(
+    true,
+    (success) => {},
+    (error) => {}
+  );
+  ```
 
 #### User Identification
 
 - Associate an app installation with a user (usually after login),
 
-	```javascript
-	PushIOManager.registerUserId("xyz@yxz.zyx", (success) => {
-	      
-	}, (error) => {
-	    
-	});
-	```
-	
+  ```javascript
+  PushIOManager.registerUserId(
+    "xyz@yxz.zyx",
+    (success) => {},
+    (error) => {}
+  );
+  ```
+
 - When the user logs out,
 
-	```javascript
-	PushIOManager.unregisterUserId((success) => {
-	      
-	}, (error) => {
-	    
-	});
-	```
-<br/>
-	
+      ```javascript
+      PushIOManager.unregisterUserId((success) => {
+
+      }, (error) => {
+
+      });
+      ```
+
+  <br/>
 
 #### Engagements And Conversion
 
 User actions can be attributed to a push notification using,
 
 ```javascript
-PushIOManager.trackEngagement(PushIOManager.engagementType.PUSHIO_ENGAGEMENT_METRIC_INAPP_PURCHASE,
-(success) => {
-	      
-}, (error) => {
-	    
-});
+PushIOManager.trackEngagement(
+  PushIOManager.engagementType.PUSHIO_ENGAGEMENT_METRIC_INAPP_PURCHASE,
+  (success) => {},
+  (error) => {}
+);
 ```
 
 <br/>
-
 
 #### In-App Messages
 
@@ -471,56 +427,72 @@ IAM can also be displayed on-demand using custom triggers.
 - Marketer launches the campaign and the IAM is delivered to the device via push or pull mechanism (depending on your Responsys Account settings)
 - When you wish to display the IAM popup, use,
 
-	```javascript
-	PushIOManager.trackEvent(custom_event_name, properties, (success) => {
-	      
-	}, (error) => {
-	      
-	});
-	```
-<br/>
+      ```javascript
+      PushIOManager.trackEvent(custom_event_name, properties, (success) => {
 
+      }, (error) => {
+
+      });
+      ```
+
+  <br/>
 
 #### Message Center
 
 - Get the Message Center messages list using,
 
-	```javascript
-	PushIOManager.fetchMessagesForMessageCenter("Primary", (response) => {
-	
-	}, (error) => {
-	      
-	});
-	```
-	
+  ```javascript
+  PushIOManager.fetchMessagesForMessageCenter(
+    "Primary",
+    (response) => {},
+    (error) => {}
+  );
+  ```
+
 - If any message has a rich-content (HTML) then call,
 
-	```javascript
-	PushIOManager.fetchRichContentForMessage(messageID, (response) => {
-	      // `response` is the HTML content
-	}, (error) => {
-	      
-	});
-	```
-	
-	Remember to store these messages, since the SDK cache is purgeable.
-	
-<br/>
+  ```javascript
+  PushIOManager.fetchRichContentForMessage(
+    messageID,
+    (response) => {
+      // `response` is the HTML content
+    },
+    (error) => {}
+  );
+  ```
 
+  Remember to store these messages, since the SDK cache is purgeable.
+
+<br/>
 
 #### Geofences And Beacons
 
 If your app is setup to monitor geofence and beacons, you can use the following APIs to record in Responsys when a user enters/exits a geofence/beacon zone.
 
 ```javascript
-PushIOManager.onGeoRegionEntered(geoRegion, (response) => {}, (error) => {});
-PushIOManager.onGeoRegionExited(geoRegion, (response) => {}, (error) => {});
-PushIOManager.onBeaconRegionEntered(beaconRegion, (response) => {}, (error) => {});
-PushIOManager.onBeaconRegionExited(beaconRegion, (response) => {}, (error) => {});
+PushIOManager.onGeoRegionEntered(
+  geoRegion,
+  (response) => {},
+  (error) => {}
+);
+PushIOManager.onGeoRegionExited(
+  geoRegion,
+  (response) => {},
+  (error) => {}
+);
+PushIOManager.onBeaconRegionEntered(
+  beaconRegion,
+  (response) => {},
+  (error) => {}
+);
+PushIOManager.onBeaconRegionExited(
+  beaconRegion,
+  (response) => {},
+  (error) => {}
+);
 ```
 
 <br/>
-
 
 #### Notification Preferences
 
@@ -528,36 +500,36 @@ Preferences are used to record user-choices for push notifications. The preferen
 
 - Declare the preference beforehand in the app,
 
-	```javascript
-	PushIOManager.declarePreference(key, label, preferenceType, (response) => {
-	
-	}, (error) => {
-	      
-	});
-	```
+  ```javascript
+  PushIOManager.declarePreference(
+    key,
+    label,
+    preferenceType,
+    (response) => {},
+    (error) => {}
+  );
+  ```
 
 - Once a preference is declared successfully, you may save the preference using,
 
-	```javascript
-	PushIOManager.setPreference(key, value, (response) => {
-	
-	}, (error) => {
-	      
-	});
-	```
-	
+  ```javascript
+  PushIOManager.setPreference(
+    key,
+    value,
+    (response) => {},
+    (error) => {}
+  );
+  ```
+
 Do not use this as a key/value store as this data is purgeable.
 
 <br/>
 
-
 ### Support
 
-If you have access to My Oracle Support, please raise a request [here](http://support.oracle.com/), otherwise open an issue in this repository. 
-
+If you have access to My Oracle Support, please raise a request [here](http://support.oracle.com/), otherwise open an issue in this repository.
 
 <br/>
-
 
 ### License
 

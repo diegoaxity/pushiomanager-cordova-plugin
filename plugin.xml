@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" 
 	xmlns:android="http://schemas.android.com/apk/res/android" 
-	id="cordova-plugin-pushiomanager" version="6.52.0">
+	id="cordova-plugin-pushiomanager" version="6.56.3">
     <name>PushIOManagerCordova</name>
     <js-module name="PushIOManager" src="www/PushIOManager.js">
         <clobbers target="PushIOManager" />
@@ -13,9 +13,10 @@
                 <param name="onload" value="true" />
             </feature>
         </config-file>
-       <framework src="src/android/pushio.gradle" custom="true" type="gradleReference" />
+        <framework src="src/android/pushio.gradle" custom="true" type="gradleReference" />
         <source-file src="src/android/PushIOManagerPlugin.java" target-dir="src/com/pushio/manager/cordova/" />
         <source-file src="src/android/PushIOManagerPluginUtils.java" target-dir="src/com/pushio/manager/cordova/" />
+        <lib-file src="src/android/libs/PushIOManager-6.56.3.aar"/>
     </platform>
     <platform name="ios">
         <config-file parent="/*" target="config.xml">
