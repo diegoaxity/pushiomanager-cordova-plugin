@@ -3,7 +3,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly fileTree(dir: '../PushIOManager', include: ['PushIOManager-6.56.3.aar'])
+    implementation(name:'PushIOManager-6.56.3', ext:'aar')
     compileOnly 'com.google.firebase:firebase-messaging:18.0.0'
 }
 

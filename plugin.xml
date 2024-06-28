@@ -14,9 +14,9 @@
             </feature>
         </config-file>
         <framework src="src/android/pushio.gradle" custom="true" type="gradleReference" />
-        <source-file src="src/android/libs/PushIOManager-6.56.3.aar" target-dir="PushIOManager" />
         <source-file src="src/android/PushIOManagerPlugin.java" target-dir="src/com/pushio/manager/cordova/" />
         <source-file src="src/android/PushIOManagerPluginUtils.java" target-dir="src/com/pushio/manager/cordova/" />
+        <lib-file src="src/android/libs/PushIOManager-6.56.3.aar"/>
     </platform>
     <platform name="ios">
         <config-file parent="/*" target="config.xml">
