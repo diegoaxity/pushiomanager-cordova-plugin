@@ -1,9 +1,9 @@
-repositories{
+repositories {
     mavenCentral()
 }
 
 dependencies {
-    compileOnly fileTree(dir: '../PushIOManager', include: ['PushIOManager-6.52.aar'])
+    compileOnly fileTree(dir: '../PushIOManager', include: ['PushIOManager-6.56.3.aar'])
     compileOnly 'com.google.firebase:firebase-messaging:18.0.0'
 }
 
