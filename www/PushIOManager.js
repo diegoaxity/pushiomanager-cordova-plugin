@@ -350,9 +350,9 @@ PushIOManager.prototype.setLogLevel = function (logLevel, success, failure) {
  *
  * @param {boolean} delayRegistration
  */
- PushIOManager.prototype.setDelayRegistration = function (delayRegistration, success, failure) {
+PushIOManager.prototype.setDelayRegistration = function (delayRegistration, success, failure) {
     if (cordova.platformId === 'ios') {
-       this.call_native(success, failure, "setDelayRegistration", [delayRegistration]);
+        this.call_native(success, failure, "setDelayRegistration", [delayRegistration]);
     } else {
         console.log("Not supported in android.");
     }
@@ -366,11 +366,11 @@ PushIOManager.prototype.setLogLevel = function (logLevel, success, failure) {
  */
 PushIOManager.prototype.isDelayRegistration = function (success, failure) {
     if (cordova.platformId === 'ios') {
-       this.call_native(success, failure, "isDelayRegistration");
+        this.call_native(success, failure, "isDelayRegistration");
     } else {
         console.log("Not supported in android.");
     }
-    
+
 }
 
 /**
@@ -576,23 +576,6 @@ PushIOManager.prototype.fetchRichContentForMessage = function (messageID, succes
  */
 PushIOManager.prototype.setInAppFetchEnabled = function (inAppFetchEnabled, success, failure) {
     this.call_native(success, failure, "setInAppFetchEnabled", [inAppFetchEnabled]);
-}
-
-/**
- * @param {boolean} crashLoggingEnabled
- * @param {function} [success] Success callback. 
- * @param {function} [failure] Failure callback.
- */
-PushIOManager.prototype.setCrashLoggingEnabled = function (crashLoggingEnabled, success, failure) {
-    this.call_native(success, failure, "setCrashLoggingEnabled", [crashLoggingEnabled]);
-}
-
-/**
- * @param {function} [success] Success callback with boolean value. 
- * @param {function} [failure] Failure callback.
- */
-PushIOManager.prototype.isCrashLoggingEnabled = function (success, failure) {
-    this.call_native(success, failure, "isCrashLoggingEnabled");
 }
 
 /**
@@ -997,45 +980,7 @@ PushIOManager.prototype.trackConversionEvent = function (event, success, failure
 }
 
 /**
- * Sets the given color to the small icon in push notifications.
- * 
- * @param {string} color as Hex String
- */
-PushIOManager.prototype.setNotificationSmallIconColor = function (color, success, failure) {
-    if (cordova.platformId === 'android') {
-        this.call_native(success, failure, "setNotificationSmallIconColor", [color]);
-    } else {
-        console.log("API not supported");
-    }
-}
-
-/**
- * Sets the given icon as the small icon in push notifications.
- * 
- * @param {string} resourceName Name of the resource in drawable/mipmap folder, without the file extension.
- */
-PushIOManager.prototype.setNotificationSmallIcon = function (resourceName, success, failure) {
-    if (cordova.platformId === 'android') {
-        this.call_native(success, failure, "setNotificationSmallIcon", [resourceName]);
-    } else {
-        console.log("API not supported");
-    }
-}
-
-/**
- * Sets the given icon as the large icon in push notifications.
- * 
- * @param {string} resourceName Name of the resource in drawable/mipmap folder, without the file extension.
- */
-PushIOManager.prototype.setNotificationLargeIcon = function (resourceName, success, failure) {
-    if (cordova.platformId === 'android') {
-        this.call_native(success, failure, "setNotificationLargeIcon", [resourceName]);
-    } else {
-        console.log("API not supported");
-    }
-}
-
- /** Sets the height of In-App banner message height.
+ * Sets the height of In-App banner message height.
  * <br> Banner height should be between 100 and 200 (inclusive) density-independent unit.
  *
  * @param {number} height
@@ -1043,7 +988,7 @@ PushIOManager.prototype.setNotificationLargeIcon = function (resourceName, succe
  * @param {function} [failure] Failure callback.
  */
 
-PushIOManager.prototype.setInAppMessageBannerHeight = function (height, success,failure) {
+PushIOManager.prototype.setInAppMessageBannerHeight = function (height, success, failure) {
     this.call_native(success, failure, "setInAppMessageBannerHeight", [height]);
 }
 
@@ -1054,7 +999,7 @@ PushIOManager.prototype.setInAppMessageBannerHeight = function (height, success,
  * @param {function} [failure] Failure callback.
  */
 
-PushIOManager.prototype.getInAppMessageBannerHeight = function (success,failure) {
+PushIOManager.prototype.getInAppMessageBannerHeight = function (success, failure) {
     this.call_native(success, failure, "getInAppMessageBannerHeight");
 }
 
@@ -1067,7 +1012,7 @@ PushIOManager.prototype.getInAppMessageBannerHeight = function (success,failure)
  * @param {function} [failure] Failure callback.
  */
 
-PushIOManager.prototype.setStatusBarHiddenForIAMBannerInterstitial = function (hideStatusBar, success,failure) {
+PushIOManager.prototype.setStatusBarHiddenForIAMBannerInterstitial = function (hideStatusBar, success, failure) {
     this.call_native(success, failure, "setStatusBarHiddenForIAMBannerInterstitial", [hideStatusBar]);
 }
 
@@ -1079,7 +1024,7 @@ PushIOManager.prototype.setStatusBarHiddenForIAMBannerInterstitial = function (h
  * @param {function} [failure] Failure callback.
  */
 
-PushIOManager.prototype.isStatusBarHiddenForIAMBannerInterstitial = function (success,failure) {
+PushIOManager.prototype.isStatusBarHiddenForIAMBannerInterstitial = function (success, failure) {
     this.call_native(success, failure, "isStatusBarHiddenForIAMBannerInterstitial");
 }
 
@@ -1114,7 +1059,6 @@ PushIOManager.prototype.onMessageCenterUpdated = function (success, failure) {
  * @property {string} richMessageURL
  * @property {string} sentTimestamp
  * @property {string} expiryTimestamp
- * @property {object} customKeyValuePairs
  */
 
 /**

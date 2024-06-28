@@ -1,5 +1,5 @@
 /**
- * Copyright © 2022, Oracle and/or its affiliates. All rights reserved.
+ * Copyright © 2020, Oracle and/or its affiliates. All rights reserved.
  * Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
  */
 
@@ -40,6 +40,7 @@ public class PushIOManagerPluginUtils {
     private static final String FBM_KEY_MESSAGE_ID = "google.message_id";
     private static final String FBM_KEY_MESSAGE_TYPE = "messageType";
     private static final String FBM_KEY_TTL = "ttl";
+
     private static final String DATE_FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ssZZZZZ";
 
     public static Map<String, Object> toMap(JSONObject jsonobj) throws JSONException {
@@ -336,7 +337,6 @@ public class PushIOManagerPluginUtils {
             }
 
             JSONObject dataObj = obj.optJSONObject(FBM_KEY_DATA);
-
             if(dataObj != null){
                 for (Iterator<String> iterator = dataObj.keys(); iterator.hasNext(); ) {
                     final String key = iterator.next();
@@ -352,4 +352,6 @@ public class PushIOManagerPluginUtils {
 
         return builder.build();
     }
+
+
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright © 2022, Oracle and/or its affiliates. All rights reserved.
+ * Copyright © 2020, Oracle and/or its affiliates. All rights reserved.
  * Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 */
 
@@ -90,7 +90,8 @@ public class PushIOManagerPlugin extends CordovaPlugin {
             "setMessageCenterBadgingEnabled", "resetBadgeCount", "resetMessageCenter", "clearInAppMessages",
             "clearInteractiveNotificationCategories", "isResponsysPush", "handleMessage", "onMessageCenterViewVisible",
             "trackMessageCenterDisplayEngagement", "trackMessageCenterOpenEngagement", "onMessageCenterViewFinish",
-            "onDeepLinkReceived", "setDelayRichPushDisplay", "isRichPushDelaySet", "showRichPushMessage", "trackConversionEvent",
+            "onDeepLinkReceived", "setDelayRichPushDisplay", "isRichPushDelaySet", "showRichPushMessage",
+            "trackConversionEvent",
             "setNotificationSmallIconColor", "setNotificationSmallIcon", "setNotificationLargeIcon",
             "setInAppMessageBannerHeight","getInAppMessageBannerHeight","setStatusBarHiddenForIAMBannerInterstitial",
             "isStatusBarHiddenForIAMBannerInterstitial","onMessageCenterUpdated");
@@ -1034,7 +1035,7 @@ public class PushIOManagerPlugin extends CordovaPlugin {
         callbackContext.success();
     }
 
-    private void setDelayRichPushDisplay(JSONArray data, CallbackContext callbackContext) {
+    private void delayRichPushDisplay(JSONArray data, CallbackContext callbackContext) {
         try {
             boolean flag = data.getBoolean(0);
             mPushIOManager.delayRichPushDisplay(flag);
@@ -1058,14 +1059,15 @@ public class PushIOManagerPlugin extends CordovaPlugin {
 
     private void trackConversionEvent(JSONArray data, CallbackContext callbackContext) {
 
-        try {          
-            JSONObject propertiesObject = data.getJSONObject(0);
+        try {
+            int metric = data.getInt(0);
+            JSONObject propertiesObject = data.getJSONObject(1);
 
             PIOConversionEvent conversionEvent = new PIOConversionEvent();
-            conversionEvent.setConversionType(Integer.parseInt(propertiesObject.getString("conversionType")));
+            conversionEvent.setConversionType(metric);
             conversionEvent.setOrderId(propertiesObject.getString("orderId"));
-            conversionEvent.setOrderAmount(propertiesObject.getDouble("orderTotal"));
-            conversionEvent.setOrderQuantity(propertiesObject.getInt("orderQuantity"));
+            conversionEvent.setOrderAmount(Double.parseDouble(propertiesObject.getString("orderTotal")));
+            conversionEvent.setOrderQuantity(Integer.parseInt(propertiesObject.getString("orderQuantity")));
 
             if (propertiesObject.has("customProperties")) {
                 JSONObject customPropertiesObject = propertiesObject.optJSONObject("customProperties");
@@ -1094,19 +1096,6 @@ public class PushIOManagerPlugin extends CordovaPlugin {
     }
 
     private void setNotificationSmallIconColor(JSONArray data, CallbackContext callbackContext) {
-        try{
-            String colorHex = data.getString(0);
-            if (!TextUtils.isEmpty(colorHex)) {
-                final int color = Color.parseColor(colorHex);
-                mPushIOManager.setNotificationSmallIconColor(color);
-            }
-        } catch (JSONException e) {
-            Log.v(TAG, "Exception: " + e.getMessage());
-            callbackContext.error(e.getMessage());
-        }
-    }
-    
-    private void setInAppMessageBannerHeight(JSONArray data, CallbackContext callbackContext){
         try{
             String colorHex = data.getString(0);
             if (!TextUtils.isEmpty(colorHex)) {
@@ -1181,58 +1170,6 @@ public class PushIOManagerPlugin extends CordovaPlugin {
         }
     }
 
-    private void setNotificationSmallIcon(JSONArray data, CallbackContext callbackContext) {
-        try{
-            String resourceName = data.getString(0);
-            if (!TextUtils.isEmpty(resourceName)) {
-
-                int resourceId = mAppContext.getResources().getIdentifier(
-                        resourceName, "drawable", mAppContext.getPackageName());
-
-                if (resourceId <= 0) {
-                    resourceId = mAppContext.getResources().getIdentifier(
-                            resourceName, "mipmap", mAppContext.getPackageName());
-                }
-
-                if (resourceId > 0) {
-                    JSONArray resourceIdArray = new JSONArray();
-                    resourceIdArray.put(resourceId);
-                    setDefaultSmallIcon(resourceIdArray, callbackContext);
-                }
-            }
-
-        } catch (JSONException e) {
-            Log.v(TAG, "Exception: " + e.getMessage());
-            callbackContext.error(e.getMessage());
-        }
-    }
-
-    private void setNotificationLargeIcon(JSONArray data, CallbackContext callbackContext) {
-
-        try{
-            String resourceName = data.getString(0);
-            if (!TextUtils.isEmpty(resourceName)) {
-                
-                int resourceId = mAppContext.getResources().getIdentifier(
-                        resourceName, "drawable", mAppContext.getPackageName());
-
-                if (resourceId <= 0) {
-                    resourceId = mAppContext.getResources().getIdentifier(
-                            resourceName, "mipmap", mAppContext.getPackageName());
-                }
-
-                if (resourceId > 0) {
-                    JSONArray resourceIdArray = new JSONArray();
-                    resourceIdArray.put(resourceId);
-                    setDefaultLargeIcon(resourceIdArray,callbackContext);
-                }
-            }
-        } catch (JSONException e) {
-            Log.v(TAG, "Exception: " + e.getMessage());
-            callbackContext.error(e.getMessage());
-        }
-    }
-
     private void getInAppMessageBannerHeight(JSONArray data, CallbackContext callbackContext) {
         int  height = mPushIOManager.getInAppMessageBannerHeight();
         callbackContext.success(String.valueOf(height));
@@ -1248,30 +1185,30 @@ public class PushIOManagerPlugin extends CordovaPlugin {
         }
     }
 
-    private void isResponsysPush(JSONArray data, CallbackContext callbackContext){
+    private void isResponsysPush(JSONArray data, CallbackContext callbackContext) {
         JSONObject remoteMessageJson = data.optJSONObject(0);
 
-        if(remoteMessageJson != null){
+        if (remoteMessageJson != null) {
             RemoteMessage remoteMessage = PushIOManagerPluginUtils.remoteMessageFromJson(remoteMessageJson);
             boolean value = mPushIOManager.isResponsysPush(remoteMessage);
             callbackContext.success(String.valueOf(value));
-        }else{
+        } else {
             callbackContext.error("Push Payload cannot be null");
         }
     }
 
-    private void handleMessage(JSONArray data, CallbackContext callbackContext){
+    private void handleMessage(JSONArray data, CallbackContext callbackContext) {
         JSONObject remoteMessageJson = data.optJSONObject(0);
 
-        if(remoteMessageJson != null){
+        if (remoteMessageJson != null) {
             RemoteMessage remoteMessage = PushIOManagerPluginUtils.remoteMessageFromJson(remoteMessageJson);
             mPushIOManager.handleMessage(remoteMessage);
             callbackContext.success();
-        }else{
+        } else {
             callbackContext.error("Push Payload cannot be null");
         }
     }
-    
+
     private void isStatusBarHiddenForIAMBannerInterstitial(JSONArray data, CallbackContext callbackContext) {
         boolean  result = mPushIOManager.isStatusBarHiddenForIAMBannerInterstitial();
         callbackContext.success(String.valueOf(result)); 

@@ -1,5 +1,5 @@
 /**
-* Copyright © 2022, Oracle and/or its affiliates. All rights reserved.
+* Copyright © 2020, Oracle and/or its affiliates. All rights reserved.
 * Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 */
 
@@ -464,21 +464,6 @@
     [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:isSDKConfigured] callbackId:command.callbackId];
 }
 
--(void)setCrashLoggingEnabled:(CDVInvokedUrlCommand*)command {
-    id value = [command.arguments objectAtIndex:0];
-    if (value == (id)[NSNull null]) {
-        value = nil;
-    }
-    BOOL enableCrashLogging = [value boolValue];
-    [[PushIOManager sharedInstance] setCrashLoggingEnabled:enableCrashLogging];
-    [self sendPluginResultToCallback:command.callbackId withResponse:nil andError:nil];
-}
-
--(void)isCrashLoggingEnabled:(CDVInvokedUrlCommand*)command {
-    BOOL isCrashLoggingEnabled = [[PushIOManager sharedInstance] isCrashLoggingEnabled];
-    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:isCrashLoggingEnabled] callbackId:command.callbackId];
-}
-
 -(void)setLoggingEnabled:(CDVInvokedUrlCommand*)command {
     id value = [command.arguments objectAtIndex:0];
     if (value == (id)[NSNull null]) {
@@ -698,6 +683,10 @@
     [PushIOManager sharedInstance].notificationPresentationOptions = UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onDeepLinkReceived:) name:PIORsysWebURLResolvedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMessageCenterNotificationUpdate:) name:PIOMessageCenterUpdateNotification object:nil];
+    
+    //Capacitor support
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupCapacitor:) name:UIApplicationDidFinishLaunchingNotification object:nil];
 }
 
 - (void)setInterceptOpenURL:(CDVInvokedUrlCommand*)command {
@@ -877,6 +866,39 @@
     }
 }
 
+-(void) setupCapacitor:(NSNotification *)notification
+{
+    UIViewController *vc = UIApplication.sharedApplication.delegate.window.rootViewController;
+    
+    NSString *className =  NSStringFromClass(vc.class);
+    
+    NSString *superClassName =  NSStringFromClass(vc.superclass);
+    
+     
+    if ([className containsString:@"CAPBridgeViewController"] ||[superClassName containsString:@"CAPBridgeViewController"] ) {
+        
+        NSDictionary *settings = [self.commandDelegate settings];
+        
+        if (settings != nil) {
+            NSString *key = [@"supportCapPushPlugin" lowercaseString];
+            BOOL supportPushPlugin = [settings[key] boolValue];
+            if (supportPushPlugin == false) {
+                UNUserNotificationCenter.currentNotificationCenter.delegate =  self;
+            }
+        }
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRegisterWithDeviceToken:) name:@"CapacitorDidRegisterForRemoteNotificationsNotification" object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailToRegisterForRemoteNotifications:) name:@"CapacitorDidFailToRegisterForRemoteNotificationsNotification" object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAppOpenURL:) name:@"CapacitorOpenURLNotification" object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotificationInBackground:) name:@"didReceiveRemoteNotification" object:nil];
+    
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotification:) name:@"PushIODidReceiveNotification" object:nil];
+        
+    }
+}
 
 -(void) handleAppOpenURL:(NSNotification *)notification
 {
